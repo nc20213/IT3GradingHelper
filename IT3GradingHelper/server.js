@@ -33,7 +33,8 @@ function sortFiles(dirs, destinationDir) {
         var files = walk(dir);
         files.forEach(function (file) {
             var name = getStudentName(file);
-            var dest = destinationDir+name+"\\";
+            var filename = file.replace(/^.*[\\\/]/, '');
+            var dest = destinationDir+name+"\\"+filename;
             mv(file, dest, function (err) {
                 console.log(err);
             });
