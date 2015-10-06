@@ -36,7 +36,7 @@ function sortFiles(dirs, destinationDir) {
             var filename = file.replace(/^.*[\\\/]/, '');
             var dest = destinationDir+name+"\\"+filename;
             mv(file, dest, function (err) {
-                console.log(err);
+                //console.log(err);
             });
         });        
     });
