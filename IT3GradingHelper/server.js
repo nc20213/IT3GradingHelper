@@ -3,6 +3,7 @@ var fs = require('fs');
 var file = require('file');
 var admzip = require('adm-zip');
 var mv = require('mv');
+var rmdir = require('rmdir');
 
 
 var port = process.env.port || 1337;
@@ -38,7 +39,12 @@ function sortFiles(dirs, destinationDir) {
             mv(file, dest, function (err) {
                 //console.log(err);
             });
-        });        
+        });
+        rmdir(dir, function (err, dirs, files) {
+            console.log(dirs);
+            console.log(files);
+            console.log("All files removed from " + dir);
+        });   
     });
     return names;
 }
