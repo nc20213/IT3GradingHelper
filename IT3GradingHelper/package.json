@@ -1,0 +1,10 @@
+{
+  "name": "IT3GradingHelper",
+  "version": "0.0.0",
+  "description": "IT3GradingHelper",
+  "main": "server.js",
+  "author": {
+    "name": "ncarlson",
+    "email": ""
+  }
+}
