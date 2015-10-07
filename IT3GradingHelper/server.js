@@ -28,7 +28,7 @@ function sortFiles(dirs, destinationDir) {
             //console.log(dirs);
             //console.log(files);
             //console.log("All files removed from " + dir);
-        });   
+        });
     });
     return names;
 }
