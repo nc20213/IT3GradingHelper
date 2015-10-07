@@ -4,52 +4,6 @@ var file = require('file');
 var admzip = require('adm-zip');
 var mv = require('mv');
 var rmdir = require('rmdir');
-var PDFMerge = require('pdf-merge');
-var spindrift = require('pdfspin');
-
-
-var port = process.env.port || 1337;
-http.createServer(function (req, res) {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    var results = unzipSubmissions("c:\\users\\ncarlson\\Downloads", "c:\\users\\ncarlson\\Downloads\\");
-    var str = '';
-    for (var i = 0; i < results.length; i++) {
-        str += results[i] + '\n';
-    }
-    var names = sortFiles(results, "c:\\users\\ncarlson\\Downloads\\");
-    for (var i = 0; i < names.length; i++) {
-        str += names[i] + '\n';
-    }
-    names.forEach(function (name) {
-        var sourceDir = "c:\\users\\ncarlson\\Downloads\\" + name;
-        //mergeFiles(sourceDir);
-    });
-    res.end(str);
-}).listen(port);
-
-function mergeFiles(sourceDir) {
-    //var pdftk = "C:\\Program Files (x86)\\PDFtk Server\\bin\\pdftk.exe";
-    var allFiles = walk(sourceDir);
-    var files = [];
-    allFiles.forEach(function (file) {
-        //console.log(file)
-        //console.log(file.slice(-4, -1))
-        if (file.slice(-4, -1) == ".pd") {
-            console.log(file);
-            files.push(file);
-        }
-    });
-    var pdfs = [];
-    files.forEach(function (file) {
-        pdfs.push(spindrift(file));
-    });
-    var newPDF = spindrift.join(pdfs);
-    console.log(newPDF);
-
-    newPDF.pdfstream().pipe(fs.createWriteStream(sourceDir + "\\merged.pdf"));
-    //var pdfMerge = new PDFMerge(files, pdftk);
-    //pdfMerge.asNewFile('merged.pdf').merge(function (error, sourceDir) { console.log(error);});
-}
 
 function sortFiles(dirs, destinationDir) {
     var breaks = ['-late_', '_'];
@@ -71,9 +25,9 @@ function sortFiles(dirs, destinationDir) {
             });
         });
         rmdir(dir, function (err, dirs, files) {
-            console.log(dirs);
-            console.log(files);
-            console.log("All files removed from " + dir);
+            //console.log(dirs);
+            //console.log(files);
+            //console.log("All files removed from " + dir);
         });   
     });
     return names;
@@ -116,7 +70,7 @@ function unzipSubmissions(sourceDir, destinationDir) {
             var filename = file.replace(/^.*[\\\/]/, '')
             filename = filename.slice(0, -4);
             var destFolder = destinationDir + filename;
-            console.log(destFolder);
+            //console.log(destFolder);
             if (!fs.existsSync(destFolder)) {
                 fs.mkdirSync(destFolder);
             }
@@ -126,7 +80,6 @@ function unzipSubmissions(sourceDir, destinationDir) {
     });
     return results;
 }
-
 
 var walk = function (dir) {
     var results = [];
@@ -139,3 +92,6 @@ var walk = function (dir) {
     })
     return results;
 }
+
+var results = unzipSubmissions("c:\\users\\ncarlson\\Downloads", "c:\\users\\ncarlson\\Downloads\\");
+var names = sortFiles(results, "c:\\users\\ncarlson\\Downloads\\");
