@@ -4,6 +4,8 @@ var file = require('file');
 var admzip = require('adm-zip');
 var mv = require('mv');
 var rmdir = require('rmdir');
+var PDFMerge = require('pdf-merge');
+var spindrift = require('pdfspin');
 
 
 var port = process.env.port || 1337;
@@ -18,8 +20,36 @@ http.createServer(function (req, res) {
     for (var i = 0; i < names.length; i++) {
         str += names[i] + '\n';
     }
+    names.forEach(function (name) {
+        var sourceDir = "c:\\users\\ncarlson\\Downloads\\" + name;
+        //mergeFiles(sourceDir);
+    });
     res.end(str);
 }).listen(port);
+
+function mergeFiles(sourceDir) {
+    //var pdftk = "C:\\Program Files (x86)\\PDFtk Server\\bin\\pdftk.exe";
+    var allFiles = walk(sourceDir);
+    var files = [];
+    allFiles.forEach(function (file) {
+        //console.log(file)
+        //console.log(file.slice(-4, -1))
+        if (file.slice(-4, -1) == ".pd") {
+            console.log(file);
+            files.push(file);
+        }
+    });
+    var pdfs = [];
+    files.forEach(function (file) {
+        pdfs.push(spindrift(file));
+    });
+    var newPDF = spindrift.join(pdfs);
+    console.log(newPDF);
+
+    newPDF.pdfstream().pipe(fs.createWriteStream(sourceDir + "\\merged.pdf"));
+    //var pdfMerge = new PDFMerge(files, pdftk);
+    //pdfMerge.asNewFile('merged.pdf').merge(function (error, sourceDir) { console.log(error);});
+}
 
 function sortFiles(dirs, destinationDir) {
     var breaks = ['-late_', '_'];
