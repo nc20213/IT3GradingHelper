@@ -1,4 +1,6 @@
-﻿var http = require('http');
+var DIRECTORY = "c:\\users\\ncarlson\\Downloads\\credit4\\"
+
+var http = require('http');
 var fs = require('fs');
 var file = require('file');
 var admzip = require('adm-zip');
@@ -33,9 +35,10 @@ function sortFiles(dirs, destinationDir) {
     return names;
 }
 
+
 function getStudentName(file) {
     var filename = file.replace(/^.*[\\\/]/, '');
-    var name = filename.split('_')[0];
+    var assn = filename.split('_')[3];
     if (name.indexOf("-late") > -1) {
         var j = name.indexOf('-late');
         name = name.slice(0, j);
@@ -93,5 +96,5 @@ var walk = function (dir) {
     return results;
 }
 
-var results = unzipSubmissions("c:\\users\\ncarlson\\Downloads", "c:\\users\\ncarlson\\Downloads\\");
-var names = sortFiles(results, "c:\\users\\ncarlson\\Downloads\\");
+var results = unzipSubmissions(DIRECTORY, DIRECTORY);
+var names = sortFiles(results, DIRECTORY);
