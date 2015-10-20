@@ -1,4 +1,4 @@
-var DIRECTORY = "c:\\users\\ncarlson\\Downloads\\credit4\\"
+var DIRECTORY = "c:\\users\\ncarlson\\Downloads\\credit6\\"
 
 var http = require('http');
 var fs = require('fs');
@@ -6,6 +6,10 @@ var file = require('file');
 var admzip = require('adm-zip');
 var mv = require('mv');
 var rmdir = require('rmdir');
+var prompt = require('prompt');
+
+
+
 
 function sortFiles(dirs, destinationDir) {
     var breaks = ['-late_', '_'];
@@ -39,6 +43,7 @@ function sortFiles(dirs, destinationDir) {
 function getStudentName(file) {
     var filename = file.replace(/^.*[\\\/]/, '');
     var assn = filename.split('_')[3];
+    var name = filename.split('_')[0];
     if (name.indexOf("-late") > -1) {
         var j = name.indexOf('-late');
         name = name.slice(0, j);
@@ -90,11 +95,22 @@ var walk = function (dir) {
     list.forEach(function (file) {
         file = dir + '\\' + file;
         var stat = fs.statSync(file);
-        if (stat && stat.isDirectory()) results = results.concat(walk(file));
-        else results.push(file);
+        //if (stat && stat.isDirectory()) results = results.concat(walk(file));
+        //else results.push(file);
+        results.push(file);
     })
     return results;
 }
 
-var results = unzipSubmissions(DIRECTORY, DIRECTORY);
-var names = sortFiles(results, DIRECTORY);
+prompt.start();
+prompt.get(['credit'], function (err,result) {
+  var DIRECTORY = "c:\\users\\ncarlson\\Downloads\\";
+  DIRECTORY = DIRECTORY+result.credit+"\\";
+  console.log("Credit:"+result.credit);
+  if (!fs.existsSync(DIRECTORY)) {
+      fs.mkdirSync(DIRECTORY);
+      console.log("Creating directory "+result.credit);
+  }
+  var results = unzipSubmissions("c:\\users\\ncarlson\\Downloads\\", DIRECTORY);
+  var names = sortFiles(results, DIRECTORY);
+})
